@@ -9,12 +9,8 @@
       @change="update"
       class="border p-3 my-2"
     />
-    <small v-if="type === 'username' && !validateUsername()"
-      >Invalid Username.</small
-    >
-    <small v-if="type === 'email' && !validateEmail()"
-      >Invalid email address.</small
-    >
+    <small v-if="validateUsername()">Invalid Username.</small>
+    <small v-if="validateEmail()">Invalid email address.</small>
     <div class="flex space-x-1 justify-between">
       <button
         type="button"
@@ -28,7 +24,7 @@
       <button
         type="button"
         class="next-btn py-2 px-6 bg-blue-700 rounded w-1/2 text-white disabled:bg-gray-400"
-        :disabled="isNextBtnDisabled || model === ''"
+        :disabled="isNextBtnDisabled || validateEmail() || validateUsername()"
         @click="nextPageClick()"
         id="btn-next"
       >
@@ -51,8 +47,6 @@ const props = defineProps([
 const { title, type, text, isPrevBtnDisabled, isNextBtnDisabled } = props;
 
 function update() {
-  console.log("🚀 ~ model:", model);
-  //   model.value++;
   model = text;
 }
 
@@ -64,20 +58,22 @@ const pervPageClick = () => {
 };
 
 const validateUsername = () => {
-  // You can implement username validation logic here
-  if (model) {
+  if (title === "email") return false;
+  if (model.value === "" || (model.value as any).includes(" ")) {
     return true;
   }
   return false;
 };
 const validateEmail = () => {
-  // You can implement email validation logic here
-  // if (!model.includes("@") || !model.includes(".")) {
-  //   return true;
-  // }
+  if (title === "username") return false;
+  if (
+    !(model.value as any).includes("@") ||
+    !(model.value as any).includes(".")
+  ) {
+    return true;
+  }
   return false;
 };
-console.log("🚀 ~ model:", model, text);
 </script>
 
 <style></style>

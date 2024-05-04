@@ -1,7 +1,8 @@
 <template>
   <div>
-    <input id="description" v-model="text" @input="checkBalance" />
-    <div>{{ message }}</div>
+    <input id="description" v-model="inputText" @input="checkBalance" />
+    <div v-if="isBalanced">{{ balancedMessage }}</div>
+    <div v-else>{{ unbalancedMessage }}</div>
   </div>
 </template>
 
@@ -9,39 +10,34 @@
 export default {
   data() {
     return {
-      text: "",
+      inputText: "",
+      isBalanced: false,
       balancedMessage: "The text is balanced.",
       unbalancedMessage: "The text is not balanced.",
     };
   },
   methods: {
-    isBalanced(text) {
-      // You can implement the isBalanced logic here
-      // For simplicity, I'll just check if the text contains equal number of opening and closing parenthesis
-      let count = 0;
+    checkBalance() {
+      this.isBalanced = this.isBalancedParentheses(this.inputText);
+    },
+    isBalancedParentheses(text) {
+      const stack = [];
+      const opening = ["(", "[", "{"];
+      const closing = [")", "]", "}"];
+
       for (let char of text) {
-        if (char === "(" || char === "{" || char === "[") {
-          count++;
-        } else if (char === ")" || char === "{" || char === "[") {
-          count--;
+        if (opening.includes(char)) {
+          stack.push(char);
+        } else if (closing.includes(char)) {
+          const index = closing.indexOf(char);
+          if (stack.length === 0 || stack.pop() !== opening[index]) {
+            return false;
+          }
         }
       }
-      return count === 0;
+
+      return stack.length === 0;
     },
-    checkBalance() {
-      if (this.isBalanced(this.text)) {
-        this.message = this.balancedMessage;
-      } else {
-        this.message = this.unbalancedMessage;
-      }
-    },
-  },
-  created() {
-    this.checkBalance(); // Check initial balance state
   },
 };
 </script>
-
-<style>
-/* Add your component styles here */
-</style>
