@@ -5,8 +5,9 @@
       <StepHandler
         v-if="step === 1"
         v-model="formData.username"
-        title="username"
-        type="text"
+        :text="formData.username"
+        title="Username"
+        :type="'text'"
         :isNextBtnDisabled="false"
         :isPrevBtnDisabled="true"
         @nextPageClicked="nextStep"
@@ -14,8 +15,9 @@
       <StepHandler
         v-else-if="step === 2"
         v-model="formData.email"
-        title="email"
-        type="email"
+        :text="formData.email"
+        title="Email"
+        :type="'email'"
         :isNextBtnDisabled="false"
         :isPrevBtnDisabled="false"
         @nextPageClicked="nextStep"

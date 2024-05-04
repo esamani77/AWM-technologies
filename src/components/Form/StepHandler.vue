@@ -1,16 +1,17 @@
 <template>
   <div>
-    <h4 class="">{{ title }}</h4>
+    <h4 class="">{{ title }}:</h4>
     <input
       :type="type"
       :name="title"
-      :id="title"
+      :id="title.toLowerCase()"
       v-model="model"
-      @change="update"
       class="border p-3 my-2"
     />
+    <br />
+
     <small v-if="validateUsername()">Invalid Username.</small>
-    <small v-if="validateEmail()">Invalid email address.</small>
+    <small v-if="validateEmail()">Email: Invalid email address.</small>
     <div class="flex space-x-1 justify-between">
       <button
         type="button"
@@ -24,7 +25,7 @@
       <button
         type="button"
         class="next-btn py-2 px-6 bg-blue-700 rounded w-1/2 text-white disabled:bg-gray-400"
-        :disabled="isNextBtnDisabled || validateEmail() || validateUsername()"
+        :disabled="isNextBtnDisabled"
         @click="nextPageClick()"
         id="btn-next"
       >
@@ -35,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+
 let model = defineModel();
 const emit = defineEmits(["nextPageClicked", "prevPageClicked"]);
 const props = defineProps([
@@ -45,29 +48,47 @@ const props = defineProps([
   "isNextBtnDisabled",
 ]);
 const { title, type, text, isPrevBtnDisabled, isNextBtnDisabled } = props;
-
-function update() {
-  model = text;
-}
+// const showError = ref(false);
+// function update() {
+//   model = text;
+// }
 
 const nextPageClick = () => {
-  emit("nextPageClicked");
+  if (
+    (title === "Username" && validateUsername()) ||
+    (title === "Email" && validateEmail())
+  ) {
+    // showError.value = true;
+  } else {
+    // showError.value = false;
+
+    emit("nextPageClicked");
+  }
 };
 const pervPageClick = () => {
   emit("prevPageClicked");
 };
 
 const validateUsername = () => {
-  if (title === "email") return false;
-  if (model.value === "" || (model.value as any).includes(" ")) {
+  if (title === "Email") return false;
+
+  const isValidLenght =
+    (model.value as any).length > 3 && (model.value as any).length < 20;
+
+  if (
+    model.value === "" ||
+    (model.value as any).includes(" ") ||
+    !isValidLenght
+  ) {
     return true;
   }
   return false;
 };
 const validateEmail = () => {
-  if (title === "username") return false;
+  if (title === "Username") return false;
   if (
     !(model.value as any).includes("@") ||
+    (model.value as any).includes(" ") ||
     !(model.value as any).includes(".")
   ) {
     return true;

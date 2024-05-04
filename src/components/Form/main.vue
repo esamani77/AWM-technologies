@@ -40,25 +40,10 @@ const formData = ref({
 
 const nextStep = () => {
   step.value++;
-  console.log(
-    "%c formData",
-    "background: #FFF; color: #000;padding: 0.25rem;border-radius: 5px",
-    formData
-  );
 };
 const prevStep = () => {
   step.value--;
 };
-console.log(
-  "%c step",
-  "background: #FFF; color: #000;padding: 0.25rem;border-radius: 5px",
-  step
-);
-console.log(
-  "%c formData",
-  "background: #FFF; color: #000;padding: 0.25rem;border-radius: 5px",
-  formData
-);
 </script>
 
 <style></style>
