@@ -1,6 +1,10 @@
 <template>
   <div>
-    {{ formData }}
+    <p>Step: review</p>
+
+    <p>Username: {{ formData.username }}</p>
+    <p>Email: {{ formData.email }}</p>
+
     <div class="flex space-x-1 justify-between">
       <button
         type="button"

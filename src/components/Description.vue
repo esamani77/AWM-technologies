@@ -1,7 +1,11 @@
 <template>
   <div>
-    <input id="description" v-model="inputText" @input="checkBalance" />
-    <div v-if="isBalanced">{{ balancedMessage }}</div>
+    <input
+      id="description"
+      v-model="description"
+      @input="validateDescription"
+    />
+    <div v-if="isBalancedResult">{{ balancedMessage }}</div>
     <div v-else>{{ unbalancedMessage }}</div>
   </div>
 </template>
@@ -10,33 +14,41 @@
 export default {
   data() {
     return {
-      inputText: "",
-      isBalanced: false,
+      description: "",
       balancedMessage: "The text is balanced.",
       unbalancedMessage: "The text is not balanced.",
+      isBalancedResult: false,
+      debounce: null,
     };
   },
   methods: {
-    checkBalance() {
-      this.isBalanced = this.isBalancedParentheses(this.inputText);
+    validateDescription() {
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(() => {
+        this.isBalancedResult = this.isBalanced();
+      }, 100);
     },
-    isBalancedParentheses(text) {
-      const stack = [];
-      const opening = ["(", "[", "{"];
-      const closing = [")", "]", "}"];
-
-      for (let char of text) {
-        if (opening.includes(char)) {
+    isBalanced() {
+      let stack = [];
+      let specialCharCount = 0;
+      for (let char of this.description) {
+        if (char === "(" || char === "[" || char === "{") {
           stack.push(char);
-        } else if (closing.includes(char)) {
-          const index = closing.indexOf(char);
-          if (stack.length === 0 || stack.pop() !== opening[index]) {
+          specialCharCount++;
+        } else if (char === ")" || char === "]" || char === "}") {
+          if (stack.length === 0) return false;
+          let lastChar = stack.pop();
+          if (
+            (lastChar === "(" && char !== ")") ||
+            (lastChar === "[" && char !== "]") ||
+            (lastChar === "{" && char !== "}")
+          ) {
             return false;
           }
+          specialCharCount--;
         }
       }
-
-      return stack.length === 0;
+      return stack.length === 0 && specialCharCount % 2 === 0;
     },
   },
 };
