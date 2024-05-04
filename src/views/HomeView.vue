@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import Form from "../components/Form/main.vue";
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
+  <main class="mx-auto w-1/3">
+    <Form />
   </main>
-</template>
+</template>../components/Wizard/main.vue
