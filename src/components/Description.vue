@@ -1,26 +1,3 @@
-<!-- <template>
-  <div>
-    <p>
-      email: <span class="font-extrabold">{{ formData.email }}</span>
-    </p>
-    <p>username: {{ formData.username }}</p>
-  </div>
-</template>
-
-<script setup lang="ts">
-const emit = defineEmits(["nextPageClicked", "prevPageClicked"]);
-const props = defineProps(["formData"]);
-const nextPageClick = () => {
-  emit("nextPageClicked");
-};
-const pervPageClick = () => {
-  emit("prevPageClicked");
-};
-const { formData } = props;
-</script>
-
- -->
-
 <template>
   <div>
     <input id="description" v-model="text" @input="checkBalance" />
@@ -43,9 +20,9 @@ export default {
       // For simplicity, I'll just check if the text contains equal number of opening and closing parenthesis
       let count = 0;
       for (let char of text) {
-        if (char === "(") {
+        if (char === "(" || char === "{" || char === "[") {
           count++;
-        } else if (char === ")") {
+        } else if (char === ")" || char === "{" || char === "[") {
           count--;
         }
       }
@@ -64,3 +41,7 @@ export default {
   },
 };
 </script>
+
+<style>
+/* Add your component styles here */
+</style>

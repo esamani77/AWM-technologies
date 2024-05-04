@@ -9,12 +9,10 @@
       @change="update"
       class="border p-3 my-2"
     />
-    <small
-      v-if="type === 'username' &&( (model as string).includes(' ')|| model === '')"
+    <small v-if="type === 'username' && !validateUsername()"
       >Invalid Username.</small
     >
-    <small
-      v-if="type === 'email' && (model as string).includes(' ')|| model === ''"
+    <small v-if="type === 'email' && !validateEmail()"
       >Invalid email address.</small
     >
     <div class="flex space-x-1 justify-between">
@@ -63,6 +61,21 @@ const nextPageClick = () => {
 };
 const pervPageClick = () => {
   emit("prevPageClicked");
+};
+
+const validateUsername = () => {
+  // You can implement username validation logic here
+  if (model) {
+    return true;
+  }
+  return false;
+};
+const validateEmail = () => {
+  // You can implement email validation logic here
+  // if (!model.includes("@") || !model.includes(".")) {
+  //   return true;
+  // }
+  return false;
 };
 console.log("🚀 ~ model:", model, text);
 </script>
